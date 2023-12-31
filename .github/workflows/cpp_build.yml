@@ -1,0 +1,27 @@
+name: Build and Package iOS App
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+
+      - name: Build and Package
+        run: |
+          clang++ -std=c++11 -stdlib=libc++ -o kiriii2 project/android/jni/src/SDL_android_main.cpp
+
+          # Package the executable into an IPA file
+          ios-deploy --bundle kiriii2 --output kiriii2.ipa
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: kiriii2
+          path: kiriii2.ipa
