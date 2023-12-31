@@ -16,11 +16,6 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
-      - name: Set up CMake
-        uses: dawidd6/action-setup-cmake@v2
-        with:
-          cmake-version: '3.21.3'
-
       - name: Build and Package
         run: |
           mkdir build
