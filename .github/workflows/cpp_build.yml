@@ -16,16 +16,15 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
+      - name: Install Bazel
+        run: |
+          curl -LO "https://github.com/bazelbuild/bazel/releases/download/4.1.0/bazel-4.1.0-installer-darwin-x86_64.sh"
+          chmod +x bazel-4.1.0-installer-darwin-x86_64.sh
+          sudo ./bazel-4.1.0-installer-darwin-x86_64.sh
+
       - name: Build and Package
         run: |
-          mkdir build
-          cd build
-          cmake ..
-          cmake --build . --config Release
-
-          # Package the executable into an IPA file
-          # Replace the following command with your actual packaging command
-          echo "Package the executable into an IPA file"
+          bazel build //project/android/jni/src:SDL_android_main --apple_generate_dsym --apple_generate_ipa
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
