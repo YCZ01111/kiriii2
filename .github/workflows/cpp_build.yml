@@ -16,20 +16,21 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v2
+      - name: Set up CMake
+        uses: dawidd6/action-setup-cmake@v2
         with:
-          sdk-platform: 'android-30'
-
-      - name: Install dependencies
-        run: |
+          cmake-version: '3.21.3'
 
       - name: Build and Package
         run: |
-          $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ -std=c++11 -stdlib=libc++ -o kiriii2 project/android/jni/src/SDL_android_main.cpp
+          mkdir build
+          cd build
+          cmake ..
+          cmake --build . --config Release
 
           # Package the executable into an IPA file
-          ios-deploy --bundle kiriii2 --output kiriii2.ipa
+          # Replace the following command with your actual packaging command
+          echo "Package the executable into an IPA file"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
