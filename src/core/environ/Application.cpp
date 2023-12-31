@@ -2,15 +2,6 @@
 
 #include <algorithm>
 #include <string>
-#include <chrono>
-#include <mutex>
-#include <condition_variable>
-#include <dispatch/dispatch.h>
-extern "C" {
-    #import <UIKit/UIKit.h>
-    #import <objc/message.h>
-}
-
 #include <vector>
 #include <assert.h>
 
@@ -254,7 +245,7 @@ extern void TVPHandleSEHException( int ErrorCode, EXCEPTION_RECORD *P, unsigned 
 extern void TVPHandleSEHException( int ErrorCode, EXCEPTION_RECORD *P, unsigned long osEsp, PCONTEXT ctx);
 #endif
 
-// ï¿½Aï¿½vï¿½ï¿½ï¿½Pï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ÌŠJï¿½nï¿½ï¿½ï¿½ÉŒÄ‚ï¿½
+// ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÌŠJn‚ÉŒÄ‚Ô
 inline void CheckMemoryLeaksStart()
 {
 #ifdef  _DEBUG
@@ -320,7 +311,7 @@ char ** _argv;
 extern void TVPInitCompatibleNativeFunctions();
 extern void TVPLoadMessage();
 AcceleratorKeyTable::AcceleratorKeyTable() {
-	// ï¿½fï¿½tï¿½Hï¿½ï¿½ï¿½gï¿½ï¿½Ç‚İï¿½ï¿½ï¿½
+	// ƒfƒtƒHƒ‹ƒg‚ğ“Ç‚İ‚Ş
 	hAccel_ = ::LoadAccelerators( (HINSTANCE)GetModuleHandle(0), MAKEINTRESOURCE(IDC_TVPWIN32));
 }
 AcceleratorKeyTable::~AcceleratorKeyTable() {
@@ -360,7 +351,7 @@ AcceleratorKey::~AcceleratorKey() {
 	delete[] keys_;
 }
 void AcceleratorKey::AddKey( WORD id, WORD key, BYTE virt ) {
-	// ï¿½Ü‚ï¿½ï¿½Í‘ï¿½ï¿½İ‚ï¿½ï¿½é‚©ï¿½`ï¿½Fï¿½bï¿½Nï¿½ï¿½ï¿½ï¿½
+	// ‚Ü‚¸‚Í‘¶İ‚·‚é‚©ƒ`ƒFƒbƒN‚·‚é
 	bool found = false;
 	int index = 0;
 	for( int i = 0; i < key_count_; i++ ) {
@@ -371,9 +362,9 @@ void AcceleratorKey::AddKey( WORD id, WORD key, BYTE virt ) {
 		}
 	}
 	if( found ) {
-		// ï¿½ï¿½ï¿½É“oï¿½^ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Rï¿½}ï¿½ï¿½ï¿½hï¿½È‚Ì‚ÅƒLï¿½[ï¿½ï¿½ï¿½ÌXï¿½Vï¿½ï¿½ï¿½sï¿½ï¿½
+		// Šù‚É“o˜^‚³‚ê‚Ä‚¢‚éƒRƒ}ƒ“ƒh‚È‚Ì‚ÅƒL[î•ñ‚ÌXV‚ğs‚¤
 		if( keys_[index].key == key && keys_[index].fVirt == virt ) {
-			// ï¿½ÏXï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½
+			// •ÏX‚³‚ê‚Ä‚¢‚È‚¢
 			return;
 		}
 		keys_[index].key = key;
@@ -399,7 +390,7 @@ void AcceleratorKey::AddKey( WORD id, WORD key, BYTE virt ) {
 
 }
 void AcceleratorKey::DelKey( WORD id ) {
-	// ï¿½Ü‚ï¿½ï¿½Í‘ï¿½ï¿½İ‚ï¿½ï¿½é‚©ï¿½`ï¿½Fï¿½bï¿½Nï¿½ï¿½ï¿½ï¿½
+	// ‚Ü‚¸‚Í‘¶İ‚·‚é‚©ƒ`ƒFƒbƒN‚·‚é
 	bool found = false;
 	for( int i = 0; i < key_count_; i++ ) {
 		if( keys_[i].cmd == id ) {
@@ -409,7 +400,7 @@ void AcceleratorKey::DelKey( WORD id ) {
 	}
 	if( found == false ) return;
 
-	// ï¿½ï¿½ï¿½İ‚ï¿½ï¿½ï¿½ï¿½ê‡ï¿½ï¿½è’¼ï¿½ï¿½
+	// ‘¶İ‚µ‚½ê‡ì‚è’¼‚µ
 	ACCEL* table = new ACCEL[key_count_-1];
 	int dest = 0;
 	for( int i = 0; i < key_count_; i++ ) {
@@ -429,12 +420,12 @@ void AcceleratorKey::DelKey( WORD id ) {
 int APIENTRY WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow ) {
 	try {
 		CheckMemoryLeaksStart();
-		// ï¿½Eï¿½Hï¿½bï¿½`ï¿½ï¿½ _crtBreakAlloc ï¿½ÉƒZï¿½bï¿½gï¿½ï¿½ï¿½ï¿½
+		// ƒEƒHƒbƒ`‚Å _crtBreakAlloc ‚ÉƒZƒbƒg‚·‚é
 
-		// XP ï¿½ï¿½ï¿½ï¿½Ågï¿½ï¿½ï¿½ï¿½APIï¿½ğ“®“Iï¿½É“Ç‚İï¿½ï¿½ï¿½ÅŒİŠï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		// XP ‚æ‚èŒã‚Åg‚¦‚éAPI‚ğ“®“I‚É“Ç‚İ‚ñ‚ÅŒİŠ·«‚ğæ‚é
 		TVPInitCompatibleNativeFunctions();
 
-		// ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\ï¿½[ï¿½Xï¿½ï¿½ï¿½ï¿½Çï¿½ï¿½ï¿½
+		// ƒƒbƒZ[ƒW•¶š—ñ‚ğƒŠƒ\[ƒX‚©‚ç“Ç‚İ
 		TVPLoadMessage();
 
 		_argc = __argc;
@@ -446,12 +437,12 @@ int APIENTRY WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	
 		// delete application and exit forcely
 		// this prevents ugly exception message on exit
-		// ï¿½Aï¿½vï¿½ï¿½ï¿½Pï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½íœï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B
-		// ï¿½ï¿½ï¿½ï¿½ÍIï¿½ï¿½ï¿½ï¿½ï¿½ÌXï¿½ï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½ï¿½}ï¿½~ï¿½ï¿½ï¿½ï¿½
+		// ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ğíœ‚µ‹­§I—¹‚³‚¹‚éB
+		// ‚±‚ê‚ÍI—¹‚ÌX‚¢—áŠOƒƒbƒZ[ƒW‚ğ—}~‚·‚é
 		delete Application;
 
 #ifndef _DEBUG
-//		::ExitProcess(TVPTerminateCode); // ï¿½ï¿½ï¿½ï¿½ï¿½ÅIï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æƒï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½Nï¿½\ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½È‚ï¿½
+//		::ExitProcess(TVPTerminateCode); // ‚±‚±‚ÅI—¹‚³‚¹‚é‚Æƒƒ‚ƒŠƒŠ[ƒN•\¦‚ªs‚í‚ê‚È‚¢
 #endif
 	} catch (...) {
 		return 2;
@@ -467,7 +458,7 @@ tTVPApplication::~tTVPApplication() {
 // 	while( windows_list_.size() ) {
 // 		std::vector<TTVPWindowForm*>::iterator i = windows_list_.begin();
 // 		delete (*i);
-// 		// TTVPWindowForm ï¿½Ìƒfï¿½Xï¿½gï¿½ï¿½ï¿½Nï¿½^ï¿½ï¿½ï¿½Åƒï¿½ï¿½Xï¿½gï¿½ï¿½ï¿½ï¿½íœï¿½ï¿½ï¿½ï¿½ï¿½Í‚ï¿½
+// 		// TTVPWindowForm ‚ÌƒfƒXƒgƒ‰ƒNƒ^“à‚ÅƒŠƒXƒg‚©‚çíœ‚³‚ê‚é‚Í‚¸
 // 	}
 // 	windows_list_.clear();
 	delete image_load_thread_;
@@ -682,11 +673,11 @@ bool tTVPApplication::StartApplication(ttstr path) {
 	return false;
 }
 /**
- * ï¿½Rï¿½ï¿½ï¿½\ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì‹Nï¿½ï¿½ï¿½ï¿½ï¿½mï¿½Fï¿½ï¿½ï¿½Aï¿½Rï¿½ï¿½ï¿½\ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì‹Nï¿½ï¿½ï¿½Ìê‡ï¿½ÍAï¿½Wï¿½ï¿½ï¿½oï¿½Í‚ï¿½ï¿½ï¿½ï¿½è“–ï¿½Ä‚ï¿½
+ * ƒRƒ“ƒ\[ƒ‹‚©‚ç‚Ì‹N“®‚©Šm”F‚µAƒRƒ“ƒ\[ƒ‹‚©‚ç‚Ì‹N“®‚Ìê‡‚ÍA•W€o—Í‚ğŠ„‚è“–‚Ä‚é
  */
 void tTVPApplication::CheckConsole() {
 #ifdef TVP_LOG_TO_COMMANDLINE_CONSOLE
-	if( has_map_report_process_ ) return; // ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½ï¿½ï¿½pï¿½qï¿½vï¿½ï¿½ï¿½Zï¿½Xï¿½ï¿½ï¿½Ä‹Nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÍƒRï¿½ï¿½ï¿½\ï¿½[ï¿½ï¿½ï¿½Ú‘ï¿½ï¿½ï¿½ï¿½È‚ï¿½
+	if( has_map_report_process_ ) return; // ‘‚«o‚µ—pqƒvƒƒZƒX‚µ‚Ä‹N“®‚³‚ê‚Ä‚¢‚½‚ÍƒRƒ“ƒ\[ƒ‹Ú‘±‚µ‚È‚¢
 	HANDLE hin  = ::GetStdHandle(STD_INPUT_HANDLE);
 	HANDLE hout = ::GetStdHandle(STD_OUTPUT_HANDLE);
 	HANDLE herr = ::GetStdHandle(STD_ERROR_HANDLE);
@@ -710,7 +701,7 @@ void tTVPApplication::CheckConsole() {
 		wchar_t console[256];
 		::GetConsoleTitle( console, 256 );
 		console_title_ = std::wstring( console );
-		// ï¿½ï¿½ï¿½Ìƒnï¿½ï¿½ï¿½hï¿½ï¿½ï¿½ï¿½ï¿½ÄŠï¿½ï¿½è“–ï¿½ï¿½
+		// Œ³‚Ìƒnƒ“ƒhƒ‹‚ğÄŠ„‚è“–‚Ä
 		if (hin)  ::SetStdHandle(STD_INPUT_HANDLE, hin);
 		if (hout) ::SetStdHandle(STD_OUTPUT_HANDLE, hout);
 		if (herr) ::SetStdHandle(STD_ERROR_HANDLE, herr);
@@ -972,7 +963,7 @@ void tTVPApplication::DeleteAcceleratorKeyTable( HWND hWnd ) {
 }
 #endif
 void tTVPApplication::CheckDigitizer() {
-	// Windows 7 ï¿½È~ï¿½Å‚Ì‚İ—Lï¿½ï¿½
+	// Windows 7 ˆÈ~‚Å‚Ì‚İ—LŒø
 #if 0
 	OSVERSIONINFOEX ovi;
 	ovi.dwOSVersionInfoSize = sizeof(ovi);
@@ -1078,7 +1069,7 @@ bool tTVPApplication::GetNotMinimizing() const
 	if( hWnd != INVALID_HANDLE_VALUE && hWnd != NULL ) {
 		return ::IsIconic( hWnd ) == 0;
 	}
-	return true; // ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ÍÅï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Æ‚İ‚È‚ï¿½
+	return true; // ƒƒCƒ“‚ª‚È‚¢‚ÍÅ¬‰»‚³‚ê‚Ä‚¢‚é‚Æ‚İ‚È‚·
 #endif
 }
 #if 0

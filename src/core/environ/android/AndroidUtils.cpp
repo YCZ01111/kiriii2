@@ -3,15 +3,6 @@
 #include "zlib.h"
 #include <map>
 #include <string>
-#include <chrono>
-#include <mutex>
-#include <condition_variable>
-#include <dispatch/dispatch.h>
-extern "C" {
-    #import <UIKit/UIKit.h>
-    #import <objc/message.h>
-}
-
 #include <vector>
 #include "tjs.h"
 #include "MsgIntf.h"
@@ -222,7 +213,7 @@ public:
             TVPThrowExceptionMessage(msg.c_str());
             return false;
         }
-        // UTF8ï¿½Ê¥Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¥Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½Ç›Qï¿½ï¿½ï¿½
+        // UTF8¤Ê¥Õ¥¡¥¤¥ëÃû¤«¤É¤¦¤«¤ÎÅÐ¶¨¡£×î³õ¤Î¥Õ¥¡¥¤¥ë¤Ç›Q¤á¤ë
         unzGoToFirstFile(uf);
         unz_file_info file_info;
         if (unzGetCurrentFileInfo(uf, &file_info, NULL, 0, NULL, 0, NULL, 0) == UNZ_OK) {
@@ -439,7 +430,7 @@ namespace kr2android {
 }
 using namespace kr2android;
 
-/*int TVPShowSimpleMessageBox(const char *pszText, const char *pszTitle, unsigned int nButton, const char **btnText) {
+int TVPShowSimpleMessageBox(const char *pszText, const char *pszTitle, unsigned int nButton, const char **btnText) {
 	JniMethodInfo methodInfo;
 	if (JniHelper::getStaticMethodInfo(methodInfo, "org/tvp/kirikiri2/KR2Activity", "ShowMessageBox", "(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V"))
 	{
@@ -470,44 +461,6 @@ using namespace kr2android;
 		return MsgBoxRet;
 	}
 	return -1;
-}*/
-int TVPShowSimpleMessageBox(const char *pszText, const char *pszTitle, unsigned int nButton, const char **btnText) {
-    std::string text(pszText);
-    std::string title(pszTitle);
-    std::vector<std::string> buttonLabels;
-    for (unsigned int i = 0; i < nButton; ++i) {
-        buttonLabels.push_back(btnText[i]);
-    }
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertController* alertController = [UIAlertController alertControllerWithTitle:[NSString stringWithUTF8String:title.c_str()]
-                                                                                 message:[NSString stringWithUTF8String:text.c_str()]
-                                                                          preferredStyle:UIAlertControllerStyleAlert];
-
-        for (unsigned int i = 0; i < buttonLabels.size(); ++i) {
-            UIAlertAction* action = [UIAlertAction actionWithTitle:[NSString stringWithUTF8String:buttonLabels[i].c_str()]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * _Nonnull action) {
-                                                               // å¤„ç†æŒ‰é’®ç‚¹å‡»äº‹ä»¶
-                                                               MsgBoxRet = i;
-                                                               MessageBoxCond.notify_one();
-                                                           }];
-            [alertController addAction:action];
-        }
-
-        UIViewController* rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
-        [rootViewController presentViewController:alertController animated:YES completion:nil];
-    });
-
-    std::unique_lock<std::mutex> lk(MessageBoxLock);
-    while (MsgBoxRet == -2) {
-        MessageBoxCond.wait_for(lk, std::chrono::milliseconds(200));
-        if (MsgBoxRet == -2) {
-            TVPForceSwapBuffer(); // update opengl events
-        }
-    }
-
-    return MsgBoxRet;
 }
 
 int TVPShowSimpleMessageBox(const ttstr & text, const ttstr & caption, const std::vector<ttstr> &vecButtons) {
@@ -522,7 +475,7 @@ int TVPShowSimpleMessageBox(const ttstr & text, const ttstr & caption, const std
 	return TVPShowSimpleMessageBox(pszText, pszTitle, btnText.size(), &btnText[0]);
 }
 
-/*int TVPShowSimpleInputBox(ttstr &text, const ttstr &caption, const ttstr &prompt, const std::vector<ttstr> &vecButtons) {
+int TVPShowSimpleInputBox(ttstr &text, const ttstr &caption, const ttstr &prompt, const std::vector<ttstr> &vecButtons) {
 	JniMethodInfo methodInfo;
 	if (JniHelper::getStaticMethodInfo(methodInfo, "org/tvp/kirikiri2/KR2Activity", "ShowInputBox", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V"))
 	{
@@ -557,41 +510,7 @@ int TVPShowSimpleMessageBox(const ttstr & text, const ttstr & caption, const std
 		return MsgBoxRet;
 	}
 	return -1;
-}*/
-int TVPShowSimpleInputBox(ttstr &text, const ttstr &caption, const ttstr &prompt, const std::vector<ttstr> &vecButtons) {
-    int MsgBoxRet = -2;
-    std::string captionStr = caption.AsStdString();
-    std::string textStr = text.AsStdString();
-    std::string promptStr = prompt.AsStdString();
-
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertController* alertController = [UIAlertController alertControllerWithTitle:NSString stringWithUTF8String:captionStr.c_str()
-                                                                                 message:NSString stringWithUTF8String:textStr.c_str()
-                                                                          preferredStyle:UIAlertControllerStyleAlert];
-
-        for (const auto& button : vecButtons) {
-            NSString* buttonTitle = [NSString stringWithUTF8String:button.AsStdString().c_str()];
-            UIAlertAction* action = [UIAlertAction actionWithTitle:buttonTitle
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction* action) {
-                                                               text = MessageBoxRetText;
-                                                               MsgBoxRet = [vecButtons indexOfObject:button];
-                                                               dispatch_semaphore_signal(semaphore);
-                                                           }];
-            [alertController addAction:action];
-        }
-
-        UIViewController* rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
-        [rootViewController presentViewController:alertController animated:YES completion:nil];
-    });
-
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-
-    return MsgBoxRet;
 }
-
 
 extern std::string Android_ShowInputDialog(const char* pszTitle, const char *pszInitText);
 extern std::string Android_ShowFileBrowser(const char* pszTitle, const char *pszInitDir, bool showEditor);

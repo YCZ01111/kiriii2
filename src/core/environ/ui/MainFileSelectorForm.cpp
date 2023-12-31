@@ -15,7 +15,6 @@
 #include "GlobalPreferenceForm.h"
 #include "IndividualPreferenceForm.h"
 #include "MessageBox.h"
-
 #include "SimpleMediaFilePlayer.h"
 #include "tinyxml2/tinyxml2.h"
 #include "StorageImpl.h"

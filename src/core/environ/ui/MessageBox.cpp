@@ -1,5 +1,4 @@
 #include "MessageBox.h"
-
 #include "cocos2d/MainScene.h"
 #include "ui/UIButton.h"
 #include "ui/UIText.h"

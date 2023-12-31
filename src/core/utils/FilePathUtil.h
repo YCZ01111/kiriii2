@@ -3,15 +3,6 @@
 #define __FILE_PATH_UTIL_H__
 
 #include <string>
-#include <chrono>
-#include <mutex>
-#include <condition_variable>
-#include <dispatch/dispatch.h>
-extern "C" {
-    #import <UIKit/UIKit.h>
-    #import <objc/message.h>
-}
-
 #include <stdlib.h>
 
 #if 0

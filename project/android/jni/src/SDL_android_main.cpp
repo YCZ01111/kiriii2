@@ -11,10 +11,6 @@
 *******************************************************************************/
 #include <string.h>
 #include <string>
-#include <mutex>
-#include <condition_variable>
-#include <dispatch/dispatch.h>
-
 #include <condition_variable>
 #include <mutex>
 #include "client/linux/handler/exception_handler.h"

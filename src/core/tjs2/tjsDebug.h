@@ -16,15 +16,6 @@
 #ifdef ENABLE_DEBUGGER
 #include <list>
 #include <string>
-#include <chrono>
-#include <mutex>
-#include <condition_variable>
-#include <dispatch/dispatch.h>
-extern "C" {
-    #import <UIKit/UIKit.h>
-    #import <objc/message.h>
-}
-
 #endif //ENABLE_DEBUGGER
 
 namespace TJS
@@ -32,10 +23,10 @@ namespace TJS
 
 #ifdef ENABLE_DEBUGGER
 struct ScopeKey {
-	int ClassIndex;	//!< ï¿½Nï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½fï¿½bï¿½Nï¿½X
-	int FuncIndex;	//!< ï¿½Öï¿½ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½fï¿½bï¿½Nï¿½X
-	int FileIndex;	//!< ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½fï¿½bï¿½Nï¿½X
-	int CodeOffset;	//!< VM ï¿½Rï¿½[ï¿½hï¿½Iï¿½tï¿½Zï¿½bï¿½g
+	int ClassIndex;	//!< ƒNƒ‰ƒX–¼ƒCƒ“ƒfƒbƒNƒX
+	int FuncIndex;	//!< ŠÖ”–¼ƒCƒ“ƒfƒbƒNƒX
+	int FileIndex;	//!< ƒtƒ@ƒCƒ‹–¼ƒCƒ“ƒfƒbƒNƒX
+	int CodeOffset;	//!< VM ƒR[ƒhƒIƒtƒZƒbƒg
 
 	ScopeKey()
 	: ClassIndex(-1), FuncIndex(-1), FileIndex(-1), CodeOffset(-1)
@@ -57,7 +48,7 @@ struct ScopeKey {
 		return( ClassIndex != rhs.ClassIndex || FuncIndex != rhs.FuncIndex || FileIndex != rhs.FileIndex || CodeOffset != rhs.CodeOffset );
 	}
 	bool operator < ( const ScopeKey& rhs ) const {
-		// ï¿½Nï¿½ï¿½ï¿½Xï¿½Aï¿½Öï¿½ï¿½ï¿½
+		// ƒNƒ‰ƒXAŠÖ”–¼
 		if( ClassIndex == rhs.ClassIndex ) {
 			if( FuncIndex == rhs.FuncIndex ) {
 				if( FileIndex == rhs.FileIndex ) {

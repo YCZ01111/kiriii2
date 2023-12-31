@@ -11,7 +11,6 @@
 #include "ui/UICheckBox.h"
 #include "Platform.h"
 #include "MessageBox.h"
-
 #include "base/CCDirector.h"
 #include "base/CCScheduler.h"
 #include "TickCount.h"

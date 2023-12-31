@@ -12,7 +12,6 @@
 #include "CCFileUtils.h"
 #include "base/CCDirector.h"
 #include "MessageBox.h"
-
 #include "platform/CCDevice.h"
 #include "base/CCScheduler.h"
 #include "utils/TickCount.h"

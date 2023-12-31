@@ -16,20 +16,11 @@
 #include "tjsScriptBlock.h"
 #include <map>
 #include <string>
-#include <chrono>
-#include <mutex>
-#include <condition_variable>
-#include <dispatch/dispatch.h>
-extern "C" {
-    #import <UIKit/UIKit.h>
-    #import <objc/message.h>
-}
-
 
 namespace TJS
 {
 /**
- * TJS2 ï¿½oï¿½Cï¿½gï¿½Rï¿½[ï¿½hï¿½ï¿½ï¿½ï¿½ï¿½oï¿½ï¿½ï¿½ï¿½ Variant ï¿½^ï¿½ğ•ª—ï¿½ï¿½ï¿½ï¿½Aï¿½Å—Lï¿½^ï¿½Å•Ûï¿½ï¿½ï¿½ï¿½é‚½ï¿½ß‚ÌƒNï¿½ï¿½ï¿½X
+ * TJS2 ƒoƒCƒgƒR[ƒh‘‚«o‚µ‚Å Variant Œ^‚ğ•ª—£‚µAŒÅ—LŒ^‚Å•Û‚·‚é‚½‚ß‚ÌƒNƒ‰ƒX
  */
 class tjsConstArrayData {
 private:
@@ -41,14 +32,14 @@ private:
 	std::vector<std::basic_string<tjs_char> > String;
 	std::vector<std::vector<tjs_uint8>* > ByteBuffer;
 
-	// ï¿½Ûï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½è‚·ï¿½é‚½ï¿½ß‚Ìƒnï¿½bï¿½Vï¿½ï¿½
+	// •Û‚µ‚½‚©‚Ç‚¤‚©”»’è‚·‚é‚½‚ß‚ÌƒnƒbƒVƒ…
 	std::map<tjs_int8,int> ByteHash;
 	std::map<tjs_int16,int> ShortHash;
 	std::map<tjs_int32,int> IntegerHash;
 	std::map<tjs_int64,int> LongHash;
 	std::map<double,int> DoubleHash;
 	std::map<std::basic_string<tjs_char>,int> StringHash;
-	// ï¿½Iï¿½Nï¿½eï¿½bï¿½gï¿½^ï¿½Ìï¿½ï¿½Íƒnï¿½bï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½
+	// ƒIƒNƒeƒbƒgŒ^‚Ì‚ÍƒnƒbƒVƒ…‚ğg‚Á‚Ä‚¢‚È‚¢
 
 	static const tjs_uint8 TYPE_VOID = 0;
 	static const tjs_uint8 TYPE_OBJECT = 1;
@@ -63,32 +54,32 @@ private:
 	static const tjs_uint8 TYPE_UNKNOWN = -1;
 
 	/**
-	 * ï¿½Iï¿½Nï¿½eï¿½bï¿½gï¿½^ï¿½Ì’lï¿½ï¿½ï¿½iï¿½[ï¿½ï¿½ï¿½ï¿½
+	 * ƒIƒNƒeƒbƒgŒ^‚Ì’l‚ğŠi”[‚·‚é
 	 */
 	int PutByteBuffer( tTJSVariantOctet* val );
 
 	/**
-	 * 1ï¿½oï¿½Cï¿½gï¿½Ì’lï¿½ï¿½ï¿½iï¿½[ï¿½ï¿½ï¿½ï¿½
+	 * 1ƒoƒCƒg‚Ì’l‚ğŠi”[‚·‚é
 	 */
 	int PutByte( tjs_int8 b );
 	
 	/**
-	 * 2ï¿½oï¿½Cï¿½gï¿½Ì’lï¿½ï¿½ï¿½iï¿½[ï¿½ï¿½ï¿½ï¿½
+	 * 2ƒoƒCƒg‚Ì’l‚ğŠi”[‚·‚é
 	 */
 	int PutShort( tjs_int16 b );
 	
 	/**
-	 * 4ï¿½oï¿½Cï¿½gï¿½Ì’lï¿½ï¿½ï¿½iï¿½[ï¿½ï¿½ï¿½ï¿½
+	 * 4ƒoƒCƒg‚Ì’l‚ğŠi”[‚·‚é
 	 */
 	int PutInteger( tjs_int32 b );
 	
 	/**
-	 * 8ï¿½oï¿½Cï¿½gï¿½Ì’lï¿½ï¿½ï¿½iï¿½[ï¿½ï¿½ï¿½ï¿½
+	 * 8ƒoƒCƒg‚Ì’l‚ğŠi”[‚·‚é
 	 */
 	int PutLong( tjs_int64 b );
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½lï¿½ï¿½ï¿½iï¿½[ï¿½ï¿½ï¿½ï¿½
+	 * •‚“®¬”“_’l‚ğŠi”[‚·‚é
 	 */
 	int PutDouble( double b );
 
@@ -117,22 +108,22 @@ public:
 	~tjsConstArrayData();
 
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½iï¿½[ï¿½ï¿½ï¿½ï¿½
+	 * •¶š—ñ‚ğŠi”[‚·‚é
 	 */
 	int PutString( const tjs_char* val );
 
 	/**
-	 * ï¿½oï¿½Cï¿½Aï¿½ï¿½ï¿½gï¿½^ï¿½ï¿½ï¿½iï¿½[ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½^ï¿½ğ“¾‚ï¿½
+	 * ƒoƒCƒAƒ“ƒgŒ^‚ªŠi”[‚µ‚Ä‚¢‚éŒ^‚ğ“¾‚é
 	 */
 	int GetType( tTJSVariant& v, tTJSScriptBlock* block );
 
 	/**
-	 * ï¿½oï¿½Cï¿½Aï¿½ï¿½ï¿½gï¿½lï¿½ï¿½ï¿½iï¿½[ï¿½ï¿½ï¿½ï¿½
+	 * ƒoƒCƒAƒ“ƒg’l‚ğŠi”[‚·‚é
 	 */
 	int PutVariant( tTJSVariant& v, tTJSScriptBlock* block );
 
 	/**
-	 * ï¿½Ûï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½oï¿½Cï¿½gï¿½ï¿½É‚ï¿½ï¿½Äï¿½ï¿½oï¿½ï¿½
+	 * •Û‚³‚ê‚Ä‚¢‚é’l‚ğƒoƒCƒg—ñ‚É‚µ‚Äæ‚èo‚·
 	 */
 	std::vector<tjs_uint8>* ExportBuffer();
 };

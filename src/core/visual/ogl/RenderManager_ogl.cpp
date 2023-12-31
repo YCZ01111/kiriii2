@@ -8,15 +8,6 @@
 #include "WindowImpl.h"
 #include "MsgIntf.h"
 #include <string>
-#include <chrono>
-#include <mutex>
-#include <condition_variable>
-#include <dispatch/dispatch.h>
-extern "C" {
-    #import <UIKit/UIKit.h>
-    #import <objc/message.h>
-}
-
 #include "../tvpgl.h"
 #include "SysInitIntf.h"
 #include <assert.h>
@@ -3975,13 +3966,13 @@ public:
 
 			// pass to OperateTriangles
 			tTVPPointD pttar[6] = {
-				dstpt[0], // О©╫О©╫О©╫О©╫
-				dstpt[1], // О©╫О©╫О©╫О©╫
-				dstpt[2], // О©╫О©╫О©╫О©╫
+				dstpt[0], // вСио
+				dstpt[1], // срио
+				dstpt[2], // вСоб
 
-				dstpt[1], // О©╫О©╫О©╫О©╫
-				dstpt[2], // О©╫О©╫О©╫О©╫
-				dstpt[3], // О©╫О©╫О©╫О©╫
+				dstpt[1], // срио
+				dstpt[2], // вСоб
+				dstpt[3], // сроб
 			}, pttex[6] = {
 				srcpt[0],
 				srcpt[1],

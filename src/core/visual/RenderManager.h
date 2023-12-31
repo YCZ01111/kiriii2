@@ -3,15 +3,6 @@
 #include <unordered_map>
 #include <stdint.h>
 #include <string>
-#include <chrono>
-#include <mutex>
-#include <condition_variable>
-#include <dispatch/dispatch.h>
-extern "C" {
-    #import <UIKit/UIKit.h>
-    #import <objc/message.h>
-}
-
 
 #ifndef GL_ZERO
 #define GL_ZERO 0

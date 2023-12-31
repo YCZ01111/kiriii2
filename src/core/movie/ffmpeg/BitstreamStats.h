@@ -2,15 +2,6 @@
 #define BITSTREAM_STATS__H__
 #include "KRMovieDef.h"
 #include <string>
-#include <chrono>
-#include <mutex>
-#include <condition_variable>
-#include <dispatch/dispatch.h>
-extern "C" {
-    #import <UIKit/UIKit.h>
-    #import <objc/message.h>
-}
-
 #ifdef TARGET_POSIX
 #include "linux/PlatformDefs.h"
 #else

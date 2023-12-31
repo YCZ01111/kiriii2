@@ -8,7 +8,6 @@
 #include "Application.h"
 #include "Platform.h"
 #include "ui/MessageBox.h"
-
 #include "ui/GlobalPreferenceForm.h"
 #include "CustomFileUtils.h"
 

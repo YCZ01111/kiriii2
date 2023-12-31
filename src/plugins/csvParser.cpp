@@ -1,14 +1,5 @@
 #include "PluginStub.h"
 #include <string>
-#include <chrono>
-#include <mutex>
-#include <condition_variable>
-#include <dispatch/dispatch.h>
-extern "C" {
-    #import <UIKit/UIKit.h>
-    #import <objc/message.h>
-}
-
 #include "ncbind/ncbind.hpp"
 
 #define NCB_MODULE_NAME TJS_W("csvParser.dll")
@@ -16,7 +7,7 @@ using namespace std;
 
 //---------------------------------------------------------------------------
 
-// Array ï¿½Nï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½o
+// Array ƒNƒ‰ƒXƒƒ“ƒo
 static iTJSDispatch2 *ArrayClearMethod   = NULL;   // Array.clear
 
 // -----------------------------------------------------------------
@@ -53,7 +44,7 @@ public:
 	}
 
 	/**
-	 * ï¿½ï¿½ï¿½sï¿½`ï¿½Fï¿½bï¿½N
+	 * ‰üsƒ`ƒFƒbƒN
 	 */
 	bool endOfLine(tjs_char c) {
 		bool eol = (c =='\r' || c == '\n');
@@ -89,11 +80,11 @@ addMember(iTJSDispatch2 *dispatch, const tjs_char *name, iTJSDispatch2 *member)
 	tTJSVariant var (member);
 	member->Release();
 	dispatch->PropSet(
-		TJS_MEMBERENSURE, // ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‡ï¿½É‚Íì¬ï¿½ï¿½ï¿½ï¿½æ‚¤ï¿½É‚ï¿½ï¿½ï¿½tï¿½ï¿½ï¿½O
-		name, // ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½ï¿½ ( ï¿½ï¿½ï¿½È‚ç‚¸ TJS_W( ) ï¿½ÅˆÍ‚ï¿½ )
-		NULL, // ï¿½qï¿½ï¿½ï¿½g ( ï¿½{ï¿½ï¿½ï¿½Íƒï¿½ï¿½ï¿½ï¿½oï¿½ï¿½ï¿½Ìƒnï¿½bï¿½Vï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½ï¿½ANULL ï¿½Å‚ï¿½ï¿½æ‚¢ )
-		&var, // ï¿½oï¿½^ï¿½ï¿½ï¿½ï¿½l
-		dispatch // ï¿½Rï¿½ï¿½ï¿½eï¿½Lï¿½Xï¿½g
+		TJS_MEMBERENSURE, // ƒƒ“ƒo‚ª‚È‚©‚Á‚½ê‡‚É‚Íì¬‚·‚é‚æ‚¤‚É‚·‚éƒtƒ‰ƒO
+		name, // ƒƒ“ƒo–¼ ( ‚©‚È‚ç‚¸ TJS_W( ) ‚ÅˆÍ‚Ş )
+		NULL, // ƒqƒ“ƒg ( –{—ˆ‚Íƒƒ“ƒo–¼‚ÌƒnƒbƒVƒ…’l‚¾‚ªANULL ‚Å‚à‚æ‚¢ )
+		&var, // “o˜^‚·‚é’l
+		dispatch // ƒRƒ“ƒeƒLƒXƒg
 		);
 }
 
@@ -126,10 +117,10 @@ static void
 delMember(iTJSDispatch2 *dispatch, const tjs_char *name)
 {
 	dispatch->DeleteMember(
-		0, // ï¿½tï¿½ï¿½ï¿½O ( 0 ï¿½Å‚æ‚¢ )
-		name, // ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½ï¿½
-		NULL, // ï¿½qï¿½ï¿½ï¿½g
-		dispatch // ï¿½Rï¿½ï¿½ï¿½eï¿½Lï¿½Xï¿½g
+		0, // ƒtƒ‰ƒO ( 0 ‚Å‚æ‚¢ )
+		name, // ƒƒ“ƒo–¼
+		NULL, // ƒqƒ“ƒg
+		dispatch // ƒRƒ“ƒeƒLƒXƒg
 		);
 }
 //---------------------------------------------------------------------------
@@ -147,27 +138,27 @@ static tjs_int32 TJS_NATIVE_CLASSID_NAME = -1;
 /**
  * CSVParser
  */
-class NI_CSVParser : public tTJSNativeInstance // ï¿½lï¿½Cï¿½eï¿½Bï¿½uï¿½Cï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½X
+class NI_CSVParser : public tTJSNativeInstance // ƒlƒCƒeƒBƒuƒCƒ“ƒXƒ^ƒ“ƒX
 {
 protected:
 	iTJSDispatch2 *target;
 	IFile *file;
 	tjs_int32 lineNo;
 
-	// ï¿½ï¿½Ø‚è•¶ï¿½ï¿½
+	// ‹æØ‚è•¶š
 	tjs_char separator;
 
-	// ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½
+	// ‰üs•¶š
 	ttstr newline;
 	
-	// ï¿½sï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½Cï¿½hï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½Åï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
+	// sî•ñ(ƒƒCƒhƒLƒƒƒ‰‚Åˆ—‚·‚é)
 	ttstr line;
 	
 	bool addline() {
 		return file->addNextLine(line);
 	}
 	
-	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	// •¶š‚³‚ª‚µ
 	int find(ttstr &line, tjs_char ch, int start) {
 		int i;
 		for (i=start; i < line.length(); i++) {
@@ -178,7 +169,7 @@ protected:
 		return i;
 	}
 
-	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	// •ªŠ„ˆ—
 	void split(iTJSDispatch2 *fields) {
 
 		ttstr fld;
@@ -207,7 +198,7 @@ protected:
 						}
 						fld += line[j];
 					}
-					// ï¿½ï¿½ï¿½sï¿½Ç‰ï¿½ï¿½ï¿½ï¿½ï¿½
+					// ‰üs’Ç‰Áˆ—
 					fld += newline;
 				} while (addline());
 			} else {
@@ -219,7 +210,7 @@ protected:
 			}
 		next:
 			{
-				// ï¿½oï¿½^
+				// “o˜^
 				tTJSVariant var(fld);
 				fields->PropSetByNum(TJS_MEMBERENSURE, cnt++, &var, fields);
 			}
@@ -230,7 +221,7 @@ protected:
 public:
 
 	/**
-	 * ï¿½Rï¿½ï¿½ï¿½Xï¿½gï¿½ï¿½ï¿½Nï¿½^
+	 * ƒRƒ“ƒXƒgƒ‰ƒNƒ^
 	 */
 	NI_CSVParser() {
 		target = NULL;
@@ -245,10 +236,10 @@ public:
 	}
 
 	/**
-	 * TJS ï¿½Rï¿½ï¿½ï¿½Xï¿½gï¿½ï¿½ï¿½Nï¿½^
-	 * @param numparams ï¿½pï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½ï¿½
+	 * TJS ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	 * @param numparams ƒpƒ‰ƒ[ƒ^”
 	 * @param param
-	 * @param tjs_obj this ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½g
+	 * @param tjs_obj this ƒIƒuƒWƒFƒNƒg
 	 */
 	tjs_error TJS_INTF_METHOD Construct(tjs_int numparams, tTJSVariant **param, iTJSDispatch2 *tjs_obj) {
 		if (numparams > 0) {
@@ -264,7 +255,7 @@ public:
 	}
 
 	/**
-	 * ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½[ï¿½Yï¿½ï¿½ï¿½ï¿½
+	 * ƒtƒ@ƒCƒ‹ƒNƒ[ƒYˆ—
 	 */
 	void clear() {
 		if (file) {
@@ -285,7 +276,7 @@ public:
 	}
 
 	/**
-	 * ï¿½pï¿½[ï¿½Tï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ƒp[ƒT‚Ì‰Šú‰»ˆ—
 	 */
 	void init(tTJSVariantString *text) {
 		clear();
@@ -294,7 +285,7 @@ public:
 	}
 
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ‰Šú‰»ˆ—
 	 */
 	void initStorage(tTJSVariantString *filename, bool utf8=false) {
 		clear();
@@ -318,7 +309,7 @@ public:
 	}
 
 
-	// 1ï¿½sï¿½Ç‚İoï¿½ï¿½
+	// 1s“Ç‚İo‚µ
 	bool getNextLine(tTJSVariant *result = NULL) {
 		bool ret = false;
 		if (file) {
@@ -340,15 +331,15 @@ public:
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½İ‚Ìsï¿½Ôï¿½ï¿½Ìæ“¾
-	 * @return ï¿½sï¿½Ôï¿½
+	 * Œ»İ‚Ìs”Ô†‚Ìæ“¾
+	 * @return s”Ô†
 	 */
 	tjs_int32 getLineNumber() {
 		return lineNo;
 	}
 	
 	/**
-	 * ï¿½pï¿½[ï¿½Xï¿½Ìï¿½ï¿½s
+	 * ƒp[ƒX‚ÌÀs
 	 */
 	void parse(iTJSDispatch2 *objthis) {
 		iTJSDispatch2 *target = this->target ? this->target : objthis;
@@ -454,26 +445,26 @@ static iTJSDispatch2 * Create_NC_CSVParser()
 
 	TJS_END_NATIVE_MEMBERS
 
-	// ï¿½è”ï¿½Ì“oï¿½^
+	// ’è”‚Ì“o˜^
 
 	/*
-	 * ï¿½ï¿½ï¿½ÌŠÖï¿½ï¿½ï¿½ classobj ï¿½ï¿½Ô‚ï¿½ï¿½Ü‚ï¿½ï¿½B
+	 * ‚±‚ÌŠÖ”‚Í classobj ‚ğ•Ô‚µ‚Ü‚·B
 	 */
 	return classobj;
 }
 
 void InitPlugin_CSVParser() {
-    // TJS ï¿½ÌƒOï¿½ï¿½ï¿½[ï¿½oï¿½ï¿½ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½
+    // TJS ‚ÌƒOƒ[ƒoƒ‹ƒIƒuƒWƒFƒNƒg‚ğæ“¾‚·‚é
     iTJSDispatch2 * global = TVPGetScriptDispatch();
 
     if (global) {
 
-        // Arary ï¿½Nï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½oï¿½[ï¿½æ“¾
+        // Arary ƒNƒ‰ƒXƒƒ“ƒo[æ“¾
         {
             tTJSVariant varScripts;
             TVPExecuteExpression(TJS_W("Array"), &varScripts);
             iTJSDispatch2 *dispatch = varScripts.AsObjectNoAddRef();
-            // ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½æ“¾
+            // ƒƒ“ƒoæ“¾
             ArrayClearMethod = getMember(dispatch, TJS_W("clear"));
         }
 
@@ -484,10 +475,10 @@ void InitPlugin_CSVParser() {
 //---------------------------------------------------------------------------
 // extern "C" __declspec(dllexport) HRESULT _stdcall V2Unlink()
 // {
-// 	// - ï¿½Ü‚ï¿½ï¿½ATJS ï¿½ÌƒOï¿½ï¿½ï¿½[ï¿½oï¿½ï¿½ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½
+// 	// - ‚Ü‚¸ATJS ‚ÌƒOƒ[ƒoƒ‹ƒIƒuƒWƒFƒNƒg‚ğæ“¾‚·‚é
 // 	iTJSDispatch2 * global = TVPGetScriptDispatch();
 // 
-// 	// - global ï¿½ï¿½ DeleteMember ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½ï¿½pï¿½ï¿½ï¿½Aï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ï¿½ï¿½íœï¿½ï¿½ï¿½ï¿½
+// 	// - global ‚Ì DeleteMember ƒƒ\ƒbƒh‚ğ—p‚¢AƒIƒuƒWƒFƒNƒg‚ğíœ‚·‚é
 // 	if (global)	{
 // 		delMember(global, L"CSVParser");
 // 		if (ArrayClearMethod) {

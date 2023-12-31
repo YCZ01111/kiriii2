@@ -1,6 +1,6 @@
 /****************************************************************************/
 /*! @file
-@brief ï¿½uï¿½ï¿½ï¿½[ï¿½Nï¿½|ï¿½Cï¿½ï¿½ï¿½gï¿½Ì‚ï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Æsï¿½Ôï¿½ï¿½ï¿½ÛŽï¿½ï¿½ï¿½ï¿½ï¿½
+@brief ƒuƒŒ[ƒNƒ|ƒCƒ“ƒg‚Ì‚ ‚éƒtƒ@ƒCƒ‹‚Æs”Ô†‚ð•ÛŽ‚·‚é
 
 -----------------------------------------------------------------------------
 	Copyright (C) T.Imoto <http://www.kaede-software.com>
@@ -15,43 +15,34 @@
 
 #include <map>
 #include <string>
-#include <chrono>
-#include <mutex>
-#include <condition_variable>
-#include <dispatch/dispatch.h>
-extern "C" {
-    #import <UIKit/UIKit.h>
-    #import <objc/message.h>
-}
-
 #include <assert.h>
 
 enum tTJSDBGHOOKType {
-	DBGHOOK_PREV_EXE_LINE,	//!< ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½
-	DBGHOOK_PREV_CALL,		//!< ï¿½Öï¿½ï¿½Rï¿½[ï¿½ï¿½
-	DBGHOOK_PREV_RETURN,	//!< ï¿½ï¿½ï¿½^ï¿½[ï¿½ï¿½ï¿½ï¿½
-	DBGHOOK_PREV_EXCEPT,	//!< ï¿½ï¿½Oï¿½Ëoï¿½ï¿½
-	DBGHOOK_PREV_BREAK,		//!< ï¿½Xï¿½Nï¿½ï¿½ï¿½vï¿½gï¿½ï¿½ï¿½Ìƒuï¿½ï¿½ï¿½[ï¿½N
+	DBGHOOK_PREV_EXE_LINE,	//!< ƒ‰ƒCƒ“ŽÀsŽž
+	DBGHOOK_PREV_CALL,		//!< ŠÖ”ƒR[ƒ‹
+	DBGHOOK_PREV_RETURN,	//!< ƒŠƒ^[ƒ“Žž
+	DBGHOOK_PREV_EXCEPT,	//!< —áŠOŽËoŽž
+	DBGHOOK_PREV_BREAK,		//!< ƒXƒNƒŠƒvƒg’†‚ÌƒuƒŒ[ƒN
 };
 // gee = debuggee
 // ger = debugger
 enum tTJSDBGEvent {
-	DBGEV_GEE_LOG = 0x8000,		//!< gee -> ger ï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½oï¿½ï¿½ (ï¿½ï¿½ï¿½lï¿½É“ï¿½ï¿½ÉˆÓ–ï¿½ï¿½Í‚È‚ï¿½)
-	DBGEV_GEE_BREAK,			//!< gee -> ger ï¿½ï¿½~ï¿½Ê’m
-	DBGEV_GEE_STACK_TRACE,		//!< gee -> ger ï¿½Xï¿½^ï¿½bï¿½Nï¿½gï¿½ï¿½ï¿½[ï¿½Xï¿½ï¿½ï¿½Ê’m
-	DBGEV_GEE_LOCAL_VALUE,		//!< gee -> ger ï¿½ï¿½ï¿½[ï¿½Jï¿½ï¿½ï¿½Ïï¿½ï¿½ï¿½ï¿½
-	DBGEV_GEE_REQUEST_SETTINGS,	//!< gee -> ger ï¿½ï¿½Oï¿½Ê’mï¿½Lï¿½ï¿½ï¿½Aï¿½uï¿½ï¿½ï¿½[ï¿½Nï¿½|ï¿½Cï¿½ï¿½ï¿½gï¿½ï¿½ñ“™‚ï¿½vï¿½ï¿½
-	DBGEV_GEE_CLASS_VALUE,		//!< gee -> ger ï¿½Nï¿½ï¿½ï¿½Xï¿½Ïï¿½ï¿½ï¿½ï¿½
+	DBGEV_GEE_LOG = 0x8000,		//!< gee -> ger ƒƒO‚ðo—Í (”’l‚É“Á‚ÉˆÓ–¡‚Í‚È‚¢)
+	DBGEV_GEE_BREAK,			//!< gee -> ger ’âŽ~’Ê’m
+	DBGEV_GEE_STACK_TRACE,		//!< gee -> ger ƒXƒ^ƒbƒNƒgƒŒ[ƒXî•ñ’Ê’m
+	DBGEV_GEE_LOCAL_VALUE,		//!< gee -> ger ƒ[ƒJƒ‹•Ï”î•ñ
+	DBGEV_GEE_REQUEST_SETTINGS,	//!< gee -> ger —áŠO’Ê’m—L–³AƒuƒŒ[ƒNƒ|ƒCƒ“ƒgî•ñ“™‚ð—v‹
+	DBGEV_GEE_CLASS_VALUE,		//!< gee -> ger ƒNƒ‰ƒX•Ï”î•ñ
 
-	DBGEV_GER_EXEC = 0x9000,	//!< ger -> gee ï¿½ï¿½ï¿½s
-	DBGEV_GER_BREAK,			//!< ger -> gee ï¿½êŽžï¿½ï¿½~
-	DBGEV_GER_STEP,				//!< ger -> gee ï¿½Xï¿½eï¿½bï¿½v
-	DBGEV_GER_TRACE,			//!< ger -> gee ï¿½gï¿½ï¿½ï¿½[ï¿½X
-	DBGEV_GER_RETURN,			//!< ger -> gee ï¿½ï¿½ï¿½^ï¿½[ï¿½ï¿½
-	DBGEV_GER_BREAKPOINT_START,	//!< ger -> gee ï¿½uï¿½ï¿½ï¿½[ï¿½Nï¿½|ï¿½Cï¿½ï¿½ï¿½gï¿½ï¿½ñ‘—Mï¿½Jï¿½n
-	DBGEV_GER_BREAKPOINT,		//!< ger -> gee ï¿½uï¿½ï¿½ï¿½[ï¿½Nï¿½|ï¿½Cï¿½ï¿½ï¿½gï¿½ï¿½ï¿½
-	DBGEV_GER_BREAKPOINT_END,	//!< ger -> gee ï¿½uï¿½ï¿½ï¿½[ï¿½Nï¿½|ï¿½Cï¿½ï¿½ï¿½gï¿½ï¿½ñ‘—Mï¿½Iï¿½ï¿½
-	DBGEV_GER_EXCEPTION_FLG,	//!< ger -> gee ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É’ï¿½~ï¿½ï¿½ï¿½é‚©ï¿½Ç‚ï¿½ï¿½ï¿½
+	DBGEV_GER_EXEC = 0x9000,	//!< ger -> gee ŽÀs
+	DBGEV_GER_BREAK,			//!< ger -> gee ˆêŽž’âŽ~
+	DBGEV_GER_STEP,				//!< ger -> gee ƒXƒeƒbƒv
+	DBGEV_GER_TRACE,			//!< ger -> gee ƒgƒŒ[ƒX
+	DBGEV_GER_RETURN,			//!< ger -> gee ƒŠƒ^[ƒ“
+	DBGEV_GER_BREAKPOINT_START,	//!< ger -> gee ƒuƒŒ[ƒNƒ|ƒCƒ“ƒgî•ñ‘—MŠJŽn
+	DBGEV_GER_BREAKPOINT,		//!< ger -> gee ƒuƒŒ[ƒNƒ|ƒCƒ“ƒgî•ñ
+	DBGEV_GER_BREAKPOINT_END,	//!< ger -> gee ƒuƒŒ[ƒNƒ|ƒCƒ“ƒgî•ñ‘—MI—¹
+	DBGEV_GER_EXCEPTION_FLG,	//!< ger -> gee —áŠO”­¶Žž‚É’âŽ~‚·‚é‚©‚Ç‚¤‚©
 };
 
 struct BreakpointLine {

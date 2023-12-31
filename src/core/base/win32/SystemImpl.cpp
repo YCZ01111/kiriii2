@@ -26,7 +26,6 @@
 #include "SystemControl.h"
 #include "DInputMgn.h"
 
-
 #include "Application.h"
 #include "TVPScreen.h"
 //#include "CompatibleNativeFuncs.h"
@@ -48,48 +47,14 @@ static bool TVPAppTitleInit = false;
 //---------------------------------------------------------------------------
 // TVPShowSimpleMessageBox
 //---------------------------------------------------------------------------
-/*static void TVPShowSimpleMessageBox(const ttstr & text, const ttstr & caption)
+static void TVPShowSimpleMessageBox(const ttstr & text, const ttstr & caption)
 {
 	HWND hWnd = TVPGetModalWindowOwnerHandle();
 	if( hWnd == INVALID_HANDLE_VALUE ) {
 		hWnd = NULL;
 	}
 	::MessageBox( hWnd, text.AsStdString().c_str(), caption.AsStdString().c_str(), MB_OK|MB_ICONINFORMATION );
-}*/
-static void TVPShowSimpleMessageBox(const ttstr & text, const ttstr & caption) {
-    std::string textStr(text);
-    std::string captionStr(caption);
-
-    // 定义一个局部变量，用于存储按钮点击的索引
-    int buttonClicked = -1;
-
-    // 创建UIAlertController实例
-    id alertController = objc_msgSend(objc_getClass("UIAlertController"), sel_registerName("alertControllerWithTitle:message:preferredStyle:"),
-                                      NSString::stringWithUTF8String(captionStr.c_str()),
-                                      NSString::stringWithUTF8String(textStr.c_str()),
-                                      UIAlertControllerStyleAlert);
-
-    // 添加"OK"按钮到弹窗
-    const char* buttonText = "OK";
-    std::string buttonStr(buttonText);
-    id buttonTitle = NSString::stringWithUTF8String(buttonStr.c_str());
-    id action = objc_msgSend(objc_getClass("UIAlertAction"), sel_registerName("actionWithTitle:style:handler:"),
-                             buttonTitle, UIAlertActionStyleDefault,
-                             ^(id action) {
-                                 // 用户点击了按钮
-                                 buttonClicked = 0;
-                                 objc_msgSend(alertController, sel_registerName("dismissViewControllerAnimated:completion:"), true, nil);
-                             });
-    objc_msgSend(alertController, sel_registerName("addAction:"), action);
-
-    // 获取当前显示的视图控制器
-    id rootViewController = objc_msgSend(objc_msgSend(objc_getClass("UIApplication"), sel_registerName("sharedApplication")),
-                                         sel_registerName("keyWindow")).rootViewController;
-
-    // 在当前视图控制器上显示弹窗
-    objc_msgSend(rootViewController, sel_registerName("presentViewController:animated:completion:"), alertController, true, nil);
 }
-
 //---------------------------------------------------------------------------
 #endif
 
@@ -661,7 +626,7 @@ enum tTVPTouchDevice {
 	tdMouseWheel		= 0x00000200
 };
 /**
- * �^�b�`�f�o�C�X(�ƃ}�E�X)�̐ڑ���Ԃ��擾����
+ * �^�b�`�f�o�C�X(�ƃ}�E�X)�̐ڑ���Ԃ��擾����
  **/
 static int TVPGetSupportTouchDevice()
 {

@@ -12,20 +12,11 @@
 #define SystemControlH
 //---------------------------------------------------------------------------
 #include <string>
-#include <chrono>
-#include <mutex>
-#include <condition_variable>
-#include <dispatch/dispatch.h>
-extern "C" {
-    #import <UIKit/UIKit.h>
-    #import <objc/message.h>
-}
-
 #include "TVPTimer.h"
 //---------------------------------------------------------------------------
 class tTVPSystemControl
 {
-private:	// ï¿½ï¿½ï¿½[ï¿½Uï¿½[ï¿½éŒ¾
+private:	// ƒ†[ƒU[éŒ¾
 	bool ContinuousEventCalling;
 	bool AutoShowConsoleOnError;
 

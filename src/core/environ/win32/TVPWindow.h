@@ -3,15 +3,6 @@
 #define __TVP_WINDOW_H__
 
 #include <string>
-#include <chrono>
-#include <mutex>
-#include <condition_variable>
-#include <dispatch/dispatch.h>
-extern "C" {
-    #import <UIKit/UIKit.h>
-    #import <objc/message.h>
-}
-
 #if 0
 #include <shellapi.h>
 #include <oleidl.h> // for MK_ALT
@@ -273,7 +264,7 @@ public:
 
 	void GetClientRect( struct tTVPRect& rt );
 
-	// ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½nï¿½ï¿½ï¿½hï¿½ï¿½
+	// ƒƒbƒZ[ƒWƒnƒ“ƒhƒ‰
 	virtual void OnActive( HWND preactive ) {}
 	virtual void OnDeactive( HWND postactive ) {}
 	virtual void OnClose( CloseAction& action ){}
