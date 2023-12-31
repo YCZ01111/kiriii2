@@ -1,3 +1,11 @@
+#define RunOnMainThread(block) \
+    if ([NSThread isMainThread]) { \
+        block(); \
+    } else { \
+        dispatch_async(dispatch_get_main_queue(), ^{ \
+            block(); \
+        }); \
+    }
 #include "AndroidUtils.h"
 #include "minizip/unzip.h"
 #include "zlib.h"
@@ -213,7 +221,7 @@ public:
             TVPThrowExceptionMessage(msg.c_str());
             return false;
         }
-        // UTF8¤Ê¥Õ¥¡¥¤¥ëÃû¤«¤É¤¦¤«¤ÎÅÐ¶¨¡£×î³õ¤Î¥Õ¥¡¥¤¥ë¤Ç›Q¤á¤ë
+        // UTF8ï¿½Ê¥Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¥Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½Ç›Qï¿½ï¿½ï¿½
         unzGoToFirstFile(uf);
         unz_file_info file_info;
         if (unzGetCurrentFileInfo(uf, &file_info, NULL, 0, NULL, 0, NULL, 0) == UNZ_OK) {
@@ -431,85 +439,91 @@ namespace kr2android {
 using namespace kr2android;
 
 int TVPShowSimpleMessageBox(const char *pszText, const char *pszTitle, unsigned int nButton, const char **btnText) {
-	JniMethodInfo methodInfo;
-	if (JniHelper::getStaticMethodInfo(methodInfo, "org/tvp/kirikiri2/KR2Activity", "ShowMessageBox", "(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V"))
-	{
-		jstring jstrTitle = methodInfo.env->NewStringUTF(pszTitle);
-		jstring jstrText = methodInfo.env->NewStringUTF(pszText);
-		jclass strcls = methodInfo.env->FindClass("java/lang/String");
-		jobjectArray btns = methodInfo.env->NewObjectArray(nButton, strcls, nullptr);
-		for (unsigned int i = 0; i < nButton; ++i) {
-			jstring jstrBtn = methodInfo.env->NewStringUTF(btnText[i]);
-			methodInfo.env->SetObjectArrayElement(btns, i, jstrBtn);
-			methodInfo.env->DeleteLocalRef(jstrBtn);
-		}
+    RunOnMainThread(^{
+        JniMethodInfo methodInfo;
+                    if (JniHelper::getStaticMethodInfo(methodInfo, "org/tvp/kirikiri2/KR2Activity", "ShowMessageBox", "(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V"))
+                    {
+                        jstring jstrTitle = methodInfo.env->NewStringUTF(pszTitle);
+                        jstring jstrText = methodInfo.env->NewStringUTF(pszText);
+                        jclass strcls = methodInfo.env->FindClass("java/lang/String");
+                        jobjectArray btns = methodInfo.env->NewObjectArray(nButton, strcls, nullptr);
+                        for (unsigned int i = 0; i < nButton; ++i) {
+                            jstring jstrBtn = methodInfo.env->NewStringUTF(btnText[i]);
+                            methodInfo.env->SetObjectArrayElement(btns, i, jstrBtn);
+                            methodInfo.env->DeleteLocalRef(jstrBtn);
+                        }
 
-		methodInfo.env->CallStaticVoidMethod(methodInfo.classID, methodInfo.methodID, jstrTitle, jstrText, btns);
+                        methodInfo.env->CallStaticVoidMethod(methodInfo.classID, methodInfo.methodID, jstrTitle, jstrText, btns);
 
-		methodInfo.env->DeleteLocalRef(jstrTitle);
-		methodInfo.env->DeleteLocalRef(jstrText);
-		methodInfo.env->DeleteLocalRef(btns);
-		methodInfo.env->DeleteLocalRef(methodInfo.classID);
+                        methodInfo.env->DeleteLocalRef(jstrTitle);
+                        methodInfo.env->DeleteLocalRef(jstrText);
+                        methodInfo.env->DeleteLocalRef(btns);
+                        methodInfo.env->DeleteLocalRef(methodInfo.classID);
 
-		std::unique_lock<std::mutex> lk(MessageBoxLock);
-		while (MsgBoxRet == -2) {
-			MessageBoxCond.wait_for(lk, std::chrono::milliseconds(200));
-			if (MsgBoxRet == -2) {
-				TVPForceSwapBuffer(); // update opengl events
-			}
-		}
-		return MsgBoxRet;
-	}
-	return -1;
+                        std::unique_lock<std::mutex> lk(MessageBoxLock);
+                        while (MsgBoxRet == -2) {
+                            MessageBoxCond.wait_for(lk, std::chrono::milliseconds(200));
+                            if (MsgBoxRet == -2) {
+                                TVPForceSwapBuffer(); // update opengl events
+                            }
+                        }
+                        return MsgBoxRet;
+                    }
+                    return -1;
+    });
 }
 
 int TVPShowSimpleMessageBox(const ttstr & text, const ttstr & caption, const std::vector<ttstr> &vecButtons) {
-	tTJSNarrowStringHolder pszText(text.c_str());
-	tTJSNarrowStringHolder pszTitle(caption.c_str());
-	std::vector<const char *> btnText; btnText.reserve(vecButtons.size());
-	std::vector<std::string> btnTextHold; btnTextHold.reserve(vecButtons.size());
-	for (const ttstr &btn : vecButtons) {
-		btnTextHold.emplace_back(btn.AsStdString());
-		btnText.emplace_back(btnTextHold.back().c_str());
-	}
-	return TVPShowSimpleMessageBox(pszText, pszTitle, btnText.size(), &btnText[0]);
+    RunOnMainThread(^{
+        tTJSNarrowStringHolder pszText(text.c_str());
+        tTJSNarrowStringHolder pszTitle(caption.c_str());
+        std::vector<const char *> btnText; btnText.reserve(vecButtons.size());
+        std::vector<std::string> btnTextHold; btnTextHold.reserve(vecButtons.size());
+        for (const ttstr &btn : vecButtons) {
+            btnTextHold.emplace_back(btn.AsStdString());
+            btnText.emplace_back(btnTextHold.back().c_str());
+        }
+        return TVPShowSimpleMessageBox(pszText, pszTitle, btnText.size(), &btnText[0]);
+    });
 }
 
 int TVPShowSimpleInputBox(ttstr &text, const ttstr &caption, const ttstr &prompt, const std::vector<ttstr> &vecButtons) {
-	JniMethodInfo methodInfo;
-	if (JniHelper::getStaticMethodInfo(methodInfo, "org/tvp/kirikiri2/KR2Activity", "ShowInputBox", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V"))
-	{
-		jstring jstrTitle = methodInfo.env->NewStringUTF(caption.AsStdString().c_str());
-		jstring jstrText = methodInfo.env->NewStringUTF(text.AsStdString().c_str());
-		jstring jstrPrompt = methodInfo.env->NewStringUTF(prompt.AsStdString().c_str());
-		jclass strcls = methodInfo.env->FindClass("java/lang/String");
-		jobjectArray btns = methodInfo.env->NewObjectArray(vecButtons.size(), strcls, nullptr);
-		for (unsigned int i = 0; i < vecButtons.size(); ++i) {
-			jstring jstrBtn = methodInfo.env->NewStringUTF(vecButtons[i].AsStdString().c_str());
-			methodInfo.env->SetObjectArrayElement(btns, i, jstrBtn);
-			methodInfo.env->DeleteLocalRef(jstrBtn);
-		}
+    RunOnMainThread(^{
+        JniMethodInfo methodInfo;
+        if (JniHelper::getStaticMethodInfo(methodInfo, "org/tvp/kirikiri2/KR2Activity", "ShowInputBox", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V"))
+        {
+            jstring jstrTitle = methodInfo.env->NewStringUTF(caption.AsStdString().c_str());
+            jstring jstrText = methodInfo.env->NewStringUTF(text.AsStdString().c_str());
+            jstring jstrPrompt = methodInfo.env->NewStringUTF(prompt.AsStdString().c_str());
+            jclass strcls = methodInfo.env->FindClass("java/lang/String");
+            jobjectArray btns = methodInfo.env->NewObjectArray(vecButtons.size(), strcls, nullptr);
+            for (unsigned int i = 0; i < vecButtons.size(); ++i) {
+                jstring jstrBtn = methodInfo.env->NewStringUTF(vecButtons[i].AsStdString().c_str());
+                methodInfo.env->SetObjectArrayElement(btns, i, jstrBtn);
+                methodInfo.env->DeleteLocalRef(jstrBtn);
+            }
 
-		MsgBoxRet = -2;
-		methodInfo.env->CallStaticVoidMethod(methodInfo.classID, methodInfo.methodID, jstrTitle, jstrPrompt, jstrText, btns);
+            MsgBoxRet = -2;
+            methodInfo.env->CallStaticVoidMethod(methodInfo.classID, methodInfo.methodID, jstrTitle, jstrPrompt, jstrText, btns);
 
-		methodInfo.env->DeleteLocalRef(jstrTitle);
-		methodInfo.env->DeleteLocalRef(jstrText);
-		methodInfo.env->DeleteLocalRef(jstrPrompt);
-		methodInfo.env->DeleteLocalRef(btns);
-		methodInfo.env->DeleteLocalRef(methodInfo.classID);
+            methodInfo.env->DeleteLocalRef(jstrTitle);
+            methodInfo.env->DeleteLocalRef(jstrText);
+            methodInfo.env->DeleteLocalRef(jstrPrompt);
+            methodInfo.env->DeleteLocalRef(btns);
+            methodInfo.env->DeleteLocalRef(methodInfo.classID);
 
-		std::unique_lock<std::mutex> lk(MessageBoxLock);
-		while (MsgBoxRet == -2) {
-			MessageBoxCond.wait_for(lk, std::chrono::milliseconds(200));
-			if (MsgBoxRet == -2) {
-				TVPForceSwapBuffer(); // update opengl events
-			}
-		}
-		text = MessageBoxRetText;
-		return MsgBoxRet;
-	}
-	return -1;
+            std::unique_lock<std::mutex> lk(MessageBoxLock);
+            while (MsgBoxRet == -2) {
+                MessageBoxCond.wait_for(lk, std::chrono::milliseconds(200));
+                if (MsgBoxRet == -2) {
+                    TVPForceSwapBuffer(); // update opengl events
+                }
+            }
+            text = MessageBoxRetText;
+            return MsgBoxRet;
+        }
+        return -1;
+    });
 }
 
 extern std::string Android_ShowInputDialog(const char* pszTitle, const char *pszInitText);

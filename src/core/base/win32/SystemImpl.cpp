@@ -8,6 +8,14 @@
 //---------------------------------------------------------------------------
 // "System" class implementation
 //---------------------------------------------------------------------------
+#define RunOnMainThread(block) \
+    if ([NSThread isMainThread]) { \
+        block(); \
+    } else { \
+        dispatch_async(dispatch_get_main_queue(), ^{ \
+            block(); \
+        }); \
+    }
 #include "tjsCommHead.h"
 
 // #include <shellapi.h>
@@ -49,11 +57,13 @@ static bool TVPAppTitleInit = false;
 //---------------------------------------------------------------------------
 static void TVPShowSimpleMessageBox(const ttstr & text, const ttstr & caption)
 {
-	HWND hWnd = TVPGetModalWindowOwnerHandle();
-	if( hWnd == INVALID_HANDLE_VALUE ) {
-		hWnd = NULL;
-	}
-	::MessageBox( hWnd, text.AsStdString().c_str(), caption.AsStdString().c_str(), MB_OK|MB_ICONINFORMATION );
+    RunOnMainThread(^{
+        HWND hWnd = TVPGetModalWindowOwnerHandle();
+        if( hWnd == INVALID_HANDLE_VALUE ) {
+            hWnd = NULL;
+        }
+        ::MessageBox( hWnd, text.AsStdString().c_str(), caption.AsStdString().c_str(), MB_OK|MB_ICONINFORMATION );
+    });
 }
 //---------------------------------------------------------------------------
 #endif
@@ -626,7 +636,7 @@ enum tTVPTouchDevice {
 	tdMouseWheel		= 0x00000200
 };
 /**
- * ƒ^ƒbƒ`ƒfƒoƒCƒX(‚Æƒ}ƒEƒX)‚ÌÚ‘±ó‘Ô‚ğæ“¾‚·‚é
+ * ï¿½^ï¿½bï¿½`ï¿½fï¿½oï¿½Cï¿½X(ï¿½Æƒ}ï¿½Eï¿½X)ï¿½ÌÚ‘ï¿½ï¿½ï¿½Ô‚ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½
  **/
 static int TVPGetSupportTouchDevice()
 {
