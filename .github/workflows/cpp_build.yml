@@ -10,12 +10,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v2
+        with:
+          sdk-platform: 'android-30'
+
       - name: Install dependencies
         run: |
 
       - name: Build and Package
         run: |
-          clang++ -std=c++11 -stdlib=libc++ -o kiriii2 project/android/jni/src/SDL_android_main.cpp
+          $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ -std=c++11 -stdlib=libc++ -o kiriii2 project/android/jni/src/SDL_android_main.cpp
 
           # Package the executable into an IPA file
           ios-deploy --bundle kiriii2 --output kiriii2.ipa
