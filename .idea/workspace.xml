@@ -19,9 +19,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4f52b108-bfff-4efc-877d-d484aacb2a42" name="默认更改列表" comment="Cocos2d-x">
+    <list default="true" id="4f52b108-bfff-4efc-877d-d484aacb2a42" name="默认更改列表" comment="COCOS2D-X-3.6">
       <change beforePath="$PROJECT_DIR$/.github/workflows/cpp_build.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/cpp_build.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +55,7 @@
       <workItem from="1703994683166" duration="1301000" />
       <workItem from="1704013040698" duration="4007000" />
       <workItem from="1704076148318" duration="1466000" />
-      <workItem from="1704102596143" duration="2568000" />
+      <workItem from="1704102596143" duration="2665000" />
     </task>
     <task id="LOCAL-00001" summary="更改版本号">
       <created>1703994788674</created>
@@ -191,7 +190,14 @@
       <option name="project" value="LOCAL" />
       <updated>1704105032746</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="COCOS2D-X-3.6">
+      <created>1704105173275</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1704105173275</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -222,17 +228,18 @@
     <MESSAGE value="还原" />
     <MESSAGE value="Cocos2d-x 3.6" />
     <MESSAGE value="Cocos2d-x" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cocos2d-x" />
+    <MESSAGE value="COCOS2D-X-3.6" />
+    <option name="LAST_COMMIT_MESSAGE" value="COCOS2D-X-3.6" />
   </component>
   <component name="WindowStateProjectService">
     <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1703994680012">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1703994680012" />
-    <state x="361" y="131" key="Vcs.Push.Dialog.v2" timestamp="1704105033635">
+    <state x="361" y="131" key="Vcs.Push.Dialog.v2" timestamp="1704105174438">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="131" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1704105033635" />
+    <state x="361" y="131" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1704105174438" />
     <state x="563" y="325" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1704018588045">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
