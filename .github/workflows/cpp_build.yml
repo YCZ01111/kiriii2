@@ -19,7 +19,7 @@ jobs:
           # 这里根据你的具体安装方式和版本进行设置
           # 例如，使用 Cocos2d-x 3.6 的安装命令示例：
           git clone https://github.com/cocos2d/cocos2d-x.git
-          pip install distutils
+          python3 -m distutils.core
           cd cocos2d-x
           python download-deps.py
           cd cocos2d-x
@@ -32,7 +32,7 @@ jobs:
           # 例如，使用 Cocos2d-x 3.6 编译 iOS 应用程序的命令示例：
           cd cocos2d-x
           ./setup.py
-          source kiriii2
+          source FILE_TO_SAVE_SYSTEM_VARIABLE
           cocos new kiriii2.ipa -p com.Y_C_Z.kiriii2.ipa -l cpp -d NEWipa
           cd NEWipa/kiriii2.ipa
           cocos run -p ios
