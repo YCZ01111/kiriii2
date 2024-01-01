@@ -18,7 +18,7 @@ jobs:
           # 安装 Cocos2d-x 3.6 的 iOS 开发环境
           # 这里根据你的具体安装方式和版本进行设置
           # 例如，使用 Cocos2d-x 3.6 的安装命令示例：
-          git clone --tag cocos2d-x-3.6 https://github.com/cocos2d/cocos2d-x.git
+          git clone --tag 3.6 https://github.com/cocos2d/cocos2d-x.git
           cd cocos2d-x
           python download-deps.py
           cd cocos2d-x
