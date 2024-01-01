@@ -20,7 +20,8 @@ jobs:
           # 例如，使用 Cocos2d-x 3.6 的安装命令示例：
           git clone https://github.com/cocos2d/cocos2d-x.git
           cd cocos2d-x
-          brew install python3-pip
+          sudo easy_install pip
+          pip install -r cocos2d-x/requirements.txt
           python download-deps.py
           cd cocos2d-x
           git submodule update --init
