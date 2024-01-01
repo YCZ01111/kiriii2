@@ -18,8 +18,6 @@ jobs:
           # 安装 Cocos2d-x 的 iOS 开发环境
           # 这里根据你的具体安装方式和版本进行设置
           git clone https://github.com/cocos2d/cocos2d-x.git
-          brew unlink python@3.11
-          brew reinstall python@3.11
           cd cocos2d-x
           python download-deps.py
           cd cocos2d-x
