@@ -18,17 +18,18 @@ jobs:
           # 安装 Cocos2d-x 3.6 的 iOS 开发环境
           # 这里根据你的具体安装方式和版本进行设置
           # 例如，使用 Cocos2d-x 3.6 的安装命令示例：
-          git clone --branch v3.6 https://github.com/cocos2d/cocos2d-x.git
+          git clone git@github.com:cocos2d/cocos2d-x.git
           cd cocos2d-x
-          python setup.py
+          python download-deps.py
+          cd cocos2d-x
+          git submodule update --init
 
       - name: Build iOS App
         run: |
           # 使用 Cocos2d-x 3.6 的命令行工具进行编译
           # 这里根据你的项目配置和要求进行设置
           # 例如，使用 Cocos2d-x 3.6 编译 iOS 应用程序的命令示例：
-          cd /path/to/project
-          cocos compile -p ios
+          cocos run -p ios
 
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
