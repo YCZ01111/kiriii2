@@ -19,7 +19,7 @@ jobs:
           # 这里根据你的具体安装方式和版本进行设置
           # 例如，使用 Cocos2d-x 3.6 的安装命令示例：
           git clone https://github.com/cocos2d/cocos2d-x.git
-          brew install python3
+          brew reinstall python@3.11
           cd cocos2d-x
           python download-deps.py
           cd cocos2d-x
