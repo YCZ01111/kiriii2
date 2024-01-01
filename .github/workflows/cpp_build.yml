@@ -15,10 +15,10 @@ jobs:
 
       - name: Set up Cocos environment
         run: |
-          # 安装 Cocos2d-x 3.6 的 iOS 开发环境
+          # 安装 Cocos2d-x 的 iOS 开发环境
           # 这里根据你的具体安装方式和版本进行设置
-          # 例如，使用 Cocos2d-x 3.6 的安装命令示例：
           git clone https://github.com/cocos2d/cocos2d-x.git
+          brew link --overwrite python@3.11
           brew reinstall python@3.11
           cd cocos2d-x
           python download-deps.py
@@ -27,9 +27,8 @@ jobs:
 
       - name: Build iOS App
         run: |
-          # 使用 Cocos2d-x 3.6 的命令行工具进行编译
-          # 这里根据你的项目配置和要求进行设置
-          # 例如，使用 Cocos2d-x 3.6 编译 iOS 应用程序的命令示例：
+          # 使用 Cocos2d-x 的命令行工具进行编译
+          # 这里根据你的项目配置和要求进行设置：
           cd cocos2d-x
           ./setup.py
           source FILE_TO_SAVE_SYSTEM_VARIABLE
