@@ -20,7 +20,7 @@ jobs:
           # 例如，使用 Cocos2d-x 3.6 的安装命令示例：
           git clone https://github.com/cocos2d/cocos2d-x.git
           cd cocos2d-x
-          sudo apt-get install python3-pip
+          brew install python
           python download-deps.py
           cd cocos2d-x
           git submodule update --init
@@ -30,6 +30,11 @@ jobs:
           # 使用 Cocos2d-x 3.6 的命令行工具进行编译
           # 这里根据你的项目配置和要求进行设置
           # 例如，使用 Cocos2d-x 3.6 编译 iOS 应用程序的命令示例：
+          cd cocos2d-x
+          ./setup.py
+          source kiriii2
+          cocos new kiriii2.ipa -p com.Y_C_Z.kiriii2.ipa -l cpp -d NEWipa
+          cd NEWipa/kiriii2.ipa
           cocos run -p ios
 
       - name: Archive artifacts
