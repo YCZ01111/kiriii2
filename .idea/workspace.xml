@@ -19,7 +19,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4f52b108-bfff-4efc-877d-d484aacb2a42" name="默认更改列表" comment="Bazel第4次尝试" />
+    <list default="true" id="4f52b108-bfff-4efc-877d-d484aacb2a42" name="默认更改列表" comment="还原">
+      <change beforePath="$PROJECT_DIR$/.github/workflows/cpp_build.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/cpp_build.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -52,7 +55,8 @@
       <workItem from="1703994659600" duration="23000" />
       <workItem from="1703994683166" duration="1301000" />
       <workItem from="1704013040698" duration="4007000" />
-      <workItem from="1704076148318" duration="1273000" />
+      <workItem from="1704076148318" duration="1466000" />
+      <workItem from="1704102596143" duration="198000" />
     </task>
     <task id="LOCAL-00001" summary="更改版本号">
       <created>1703994788674</created>
@@ -124,7 +128,14 @@
       <option name="project" value="LOCAL" />
       <updated>1704076765001</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="还原">
+      <created>1704077558903</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1704077558903</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -152,24 +163,25 @@
     <MESSAGE value="Bazel第二次尝试" />
     <MESSAGE value="Bazel第三次尝试" />
     <MESSAGE value="Bazel第4次尝试" />
-    <option name="LAST_COMMIT_MESSAGE" value="Bazel第4次尝试" />
+    <MESSAGE value="还原" />
+    <option name="LAST_COMMIT_MESSAGE" value="还原" />
   </component>
   <component name="WindowStateProjectService">
     <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1703994680012">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1703994680012" />
-    <state x="361" y="131" key="Vcs.Push.Dialog.v2" timestamp="1704076767986">
+    <state x="361" y="131" key="Vcs.Push.Dialog.v2" timestamp="1704077560440">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="131" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1704076767986" />
+    <state x="361" y="131" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1704077560440" />
     <state x="563" y="325" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1704018588045">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="563" y="325" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824@0.0.1536.824" timestamp="1704018588045" />
-    <state x="466" y="146" width="603" height="584" key="find.popup" timestamp="1704077420829">
+    <state x="466" y="146" width="603" height="584" key="find.popup" timestamp="1704102693787">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="466" y="146" width="603" height="584" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1704077420829" />
+    <state x="466" y="146" width="603" height="584" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1704102693787" />
   </component>
 </project>

@@ -1,33 +1,37 @@
-name: Build and Package iOS App
+name: Build iOS App
+
 on:
   push:
     branches:
       - main
+
 jobs:
   build:
     runs-on: macos-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          java-version: '11'
-          distribution: 'adopt'
-
-      - name: Install Bazel
+      - name: Set up Cocos environment
         run: |
-          curl -LO "https://github.com/bazelbuild/bazel/releases/download/4.1.0/bazel-4.1.0-installer-darwin-x86_64.sh"
-          chmod +x bazel-4.1.0-installer-darwin-x86_64.sh
-          sudo ./bazel-4.1.0-installer-darwin-x86_64.sh
+          # 安装 Cocos2d-x 3.6 的 iOS 开发环境
+          # 这里根据你的具体安装方式和版本进行设置
+          # 例如，使用 Cocos2d-x 3.6 的安装命令示例：
+          git clone --branch v3.6 https://github.com/cocos2d/cocos2d-x.git
+          cd cocos2d-x
+          python setup.py
 
-      - name: Build and Package
+      - name: Build iOS App
         run: |
-          bazel build //project/android/jni/src:SDL_android_main --apple_generate_dsym --apple_generate_ipa
+          # 使用 Cocos2d-x 3.6 的命令行工具进行编译
+          # 这里根据你的项目配置和要求进行设置
+          # 例如，使用 Cocos2d-x 3.6 编译 iOS 应用程序的命令示例：
+          cd /path/to/project
+          cocos compile -p ios
 
-      - name: Upload artifact
+      - name: Archive artifacts
         uses: actions/upload-artifact@v2
         with:
           name: kiriii2
-          path: kiriii2.ipa
+          path: kiriii2.ipa  # 替换为实际的构建输出目录
