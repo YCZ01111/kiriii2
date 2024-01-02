@@ -26,15 +26,14 @@ jobs:
           cd cocos2d-x
           echo "yes" > input.txt
           /usr/bin/python3 download-deps.py < input.txt
-          for i in {1..9}; do
-            git submodule update --init && break || sleep 15
-          done
+          # git submodule update --init
+
 
       - name: Build iOS App
         run: |
           # 使用 Cocos2d-x 的命令行工具进行编译
           # 这里根据你的项目配置和要求进行设置：
-          cd cocos2d-x
+          # cd cocos2d-x
           ./setup.py
           source FILE_TO_SAVE_SYSTEM_VARIABLE
           cocos new kiriii2.ipa -p com.Y_C_Z.kiriii2.ipa -l cpp -d NEWipa
