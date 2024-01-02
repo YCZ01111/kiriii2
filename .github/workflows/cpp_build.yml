@@ -26,7 +26,6 @@ jobs:
           cd cocos2d-x
           echo "yes" > input.txt
           /usr/bin/python3 download-deps.py < input.txt
-          cd cocos2d-x
           git submodule update --init
 
       - name: Build iOS App
