@@ -24,7 +24,8 @@ jobs:
           # 这里根据你的具体安装方式和版本进行设置
           git clone https://github.com/cocos2d/cocos2d-x.git
           cd cocos2d-x
-          /usr/bin/python3 download-deps.py
+          echo "yes" > input.txt
+          /usr/bin/python3 download-deps.py < input.txt
           cd cocos2d-x
           git submodule update --init
 
