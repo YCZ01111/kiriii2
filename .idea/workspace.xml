@@ -21,7 +21,6 @@
   <component name="ChangeListManager">
     <list default="true" id="4f52b108-bfff-4efc-877d-d484aacb2a42" name="默认更改列表" comment="React Native">
       <change beforePath="$PROJECT_DIR$/.github/workflows/cpp_build.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/cpp_build.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,14 +57,7 @@
       <workItem from="1704076148318" duration="1466000" />
       <workItem from="1704102596143" duration="8938000" />
       <workItem from="1704158090470" duration="7862000" />
-      <workItem from="1704186202224" duration="442000" />
-    </task>
-    <task id="LOCAL-00003" summary="配置jdk">
-      <created>1704018650247</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1704018650247</updated>
+      <workItem from="1704186202224" duration="605000" />
     </task>
     <task id="LOCAL-00004" summary="cmake">
       <created>1704019266197</created>
@@ -403,7 +395,14 @@
       <option name="project" value="LOCAL" />
       <updated>1704186341287</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="React Native">
+      <created>1704186660515</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1704186660515</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -446,10 +445,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1703994680012" />
-    <state x="391" y="131" key="Vcs.Push.Dialog.v2" timestamp="1704186343814">
+    <state x="391" y="131" key="Vcs.Push.Dialog.v2" timestamp="1704186661587">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="391" y="131" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1704186343814" />
+    <state x="391" y="131" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1704186661587" />
     <state x="563" y="325" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1704018588045">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
