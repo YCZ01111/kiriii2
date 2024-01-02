@@ -23,9 +23,8 @@ jobs:
           # 安装 Cocos2d-x 的 iOS 开发环境
           # 这里根据你的具体安装方式和版本进行设置
           git clone https://github.com/cocos2d/cocos2d-x.git
-          pip install --upgrade setuptools
           cd cocos2d-x
-          python download-deps.py
+          /usr/bin/python download-deps.py
           cd cocos2d-x
           git submodule update --init
 
