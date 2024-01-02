@@ -35,7 +35,7 @@ jobs:
           # 这里根据你的项目配置和要求进行设置：
           cd cocos2d-x
           /usr/bin/python3 setup.py
-          source FILE_TO_SAVE_SYSTEM_VARIABLE
+          # source FILE_TO_SAVE_SYSTEM_VARIABLE
           cocos new kiriii2.ipa -p com.Y_C_Z.kiriii2.ipa -l cpp -d NEWipa
           cd NEWipa/kiriii2.ipa
           cocos run -p ios
