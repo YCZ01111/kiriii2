@@ -26,7 +26,9 @@ jobs:
           cd cocos2d-x
           echo "yes" > input.txt
           /usr/bin/python3 download-deps.py < input.txt
-          git submodule update --init
+          for i in {1..9}; do
+            git submodule update --init && break || sleep 15
+          done
 
       - name: Build iOS App
         run: |
