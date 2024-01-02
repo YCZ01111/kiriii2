@@ -19,7 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4f52b108-bfff-4efc-877d-d484aacb2a42" name="默认更改列表" comment="cocos">
+    <list default="true" id="4f52b108-bfff-4efc-877d-d484aacb2a42" name="默认更改列表" comment="React Native">
       <change beforePath="$PROJECT_DIR$/.github/workflows/cpp_build.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/cpp_build.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
@@ -58,14 +58,7 @@
       <workItem from="1704076148318" duration="1466000" />
       <workItem from="1704102596143" duration="8938000" />
       <workItem from="1704158090470" duration="7862000" />
-      <workItem from="1704186202224" duration="115000" />
-    </task>
-    <task id="LOCAL-00002" summary="主线程调用TVPShowSimpleMessageBox函数">
-      <created>1703995962484</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1703995962484</updated>
+      <workItem from="1704186202224" duration="442000" />
     </task>
     <task id="LOCAL-00003" summary="配置jdk">
       <created>1704018650247</created>
@@ -403,7 +396,14 @@
       <option name="project" value="LOCAL" />
       <updated>1704166868623</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="React Native">
+      <created>1704186341287</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1704186341287</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -438,17 +438,18 @@
     <MESSAGE value="cocos2d-x-3.6" />
     <MESSAGE value="distutils" />
     <MESSAGE value="cocos" />
-    <option name="LAST_COMMIT_MESSAGE" value="cocos" />
+    <MESSAGE value="React Native" />
+    <option name="LAST_COMMIT_MESSAGE" value="React Native" />
   </component>
   <component name="WindowStateProjectService">
     <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1703994680012">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1703994680012" />
-    <state x="391" y="131" key="Vcs.Push.Dialog.v2" timestamp="1704166869662">
+    <state x="391" y="131" key="Vcs.Push.Dialog.v2" timestamp="1704186343814">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="391" y="131" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1704166869662" />
+    <state x="391" y="131" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1704186343814" />
     <state x="563" y="325" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1704018588045">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
