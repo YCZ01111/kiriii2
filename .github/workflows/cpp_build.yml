@@ -24,6 +24,8 @@ jobs:
       - name: Build iOS app
         run: |
           npm install -g react-native-cli
+          git clone https://github.com/YCZ01111/kiriii2.git
+          cd kiriii2
           npx react-native run-ios --configuration Release
 
       - name: Archive artifacts
