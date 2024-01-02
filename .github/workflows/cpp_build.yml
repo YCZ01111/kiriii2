@@ -13,6 +13,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Install Xcode Command Line Tools
+        run: |
+          sudo rm -rf /Library/Developer/CommandLineTools
+          sudo xcode-select --install
+
       - name: Set up Cocos environment
         run: |
           # 安装 Cocos2d-x 的 iOS 开发环境
