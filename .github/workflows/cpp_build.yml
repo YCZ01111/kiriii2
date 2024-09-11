@@ -1,35 +1,46 @@
-name: iOS Build
+---
+    name: "release"
+    
+    on:
+      push:
+        tags:
+          - "1.*"
+      workflow_dispatch:
+        inputs:
+          logLevel:
+            description: 'Log level'     
+            required: true
+            default: 'warning'
+    jobs:
+      flutter-build-ios:
+        name: "Release for iOS"
+        runs-on: "macos-latest"
+        permissions: write-all
 
-on:
-  push:
-    branches:
-      - main  # 根据您的分支名称进行调整
-
-jobs:
-  build:
-    runs-on: macOS-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build iOS app
-        run: |
-          npm install -g react-native-cli
-          git clone https://github.com/YCZ01111/kiriii2.git
-          cd kiriii2
-          npx react-native run-ios --configuration Release
-
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: kiriii2
-          path: kiriii2.ipa  # 替换为实际的构建输出目录
+        steps:
+          - name: Clone repository
+            uses: actions/checkout@v4
+          - name: Extract tag name
+            run: echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+          - name: Echo build progress
+            run: echo "Kazumi_ios_${{ env.tag }}.ipa build progress"
+          - name: Set up Flutter
+            uses: subosito/flutter-action@v2
+            with:
+              channel: stable
+              flutter-version-file: pubspec.yaml
+          - run: flutter pub get
+          - name: Build IPA
+            run: |
+              flutter build ios --release --no-codesign
+          - name: Create IPA
+            run: |
+              mkdir Payload
+              cp -R build/ios/iphoneos/Runner.app Payload/Runner.app
+              zip -q -r Kazumi_ios_${{ env.tag }}_no_sign.ipa Payload
+          - name: Upload iOS build
+            uses: actions/upload-artifact@v4
+            with:
+              name: ios_outputs
+              path: Kazumi_ios_*.ipa
+         
